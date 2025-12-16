@@ -61,7 +61,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
         destinations: [
-          // products
+          // jobs - keep for now but could be replaced
           NavigationDestination(
             icon: const Icon(Icons.work_outline),
             selectedIcon: const Icon(Icons.work),
@@ -73,9 +73,14 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: 'Entries'.hardcoded,
           ),
           NavigationDestination(
+            icon: const Icon(Icons.train_outlined),
+            selectedIcon: const Icon(Icons.train),
+            label: 'Moje Podróże'.hardcoded,
+          ),
+          NavigationDestination(
             icon: const Icon(Icons.person_outline),
             selectedIcon: const Icon(Icons.person),
-            label: 'Account'.hardcoded,
+            label: 'Konto'.hardcoded,
           ),
         ],
         onDestinationSelected: onDestinationSelected,
@@ -116,9 +121,14 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                 label: Text('Entries'.hardcoded),
               ),
               NavigationRailDestination(
+                icon: const Icon(Icons.train_outlined),
+                selectedIcon: const Icon(Icons.train),
+                label: Text('Moje Podróże'.hardcoded),
+              ),
+              NavigationRailDestination(
                 icon: const Icon(Icons.person_outline),
                 selectedIcon: const Icon(Icons.person),
-                label: Text('Account'.hardcoded),
+                label: Text('Konto'.hardcoded),
               ),
             ],
           ),
