@@ -61,7 +61,9 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
         destinations: [
-          // products
+          // Legacy features - DEPRECATED
+          // TODO: Usunąć w wersji 2.0 (po zakończeniu migracji użytkowników)
+          // Planowany sunset: Q2 2026
           NavigationDestination(
             icon: const Icon(Icons.work_outline),
             selectedIcon: const Icon(Icons.work),
@@ -72,10 +74,16 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             selectedIcon: const Icon(Icons.view_headline),
             label: 'Entries'.hardcoded,
           ),
+          // New features
+          NavigationDestination(
+            icon: const Icon(Icons.train_outlined),
+            selectedIcon: const Icon(Icons.train),
+            label: 'Moje Podróże'.hardcoded,
+          ),
           NavigationDestination(
             icon: const Icon(Icons.person_outline),
             selectedIcon: const Icon(Icons.person),
-            label: 'Account'.hardcoded,
+            label: 'Konto'.hardcoded,
           ),
         ],
         onDestinationSelected: onDestinationSelected,
@@ -105,6 +113,9 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
             onDestinationSelected: onDestinationSelected,
             labelType: NavigationRailLabelType.all,
             destinations: <NavigationRailDestination>[
+              // Legacy features - DEPRECATED
+              // TODO: Usunąć w wersji 2.0 (po zakończeniu migracji użytkowników)
+              // Planowany sunset: Q2 2026
               NavigationRailDestination(
                 icon: const Icon(Icons.work_outline),
                 selectedIcon: const Icon(Icons.work),
@@ -115,10 +126,16 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                 selectedIcon: const Icon(Icons.view_headline),
                 label: Text('Entries'.hardcoded),
               ),
+              // New features
+              NavigationRailDestination(
+                icon: const Icon(Icons.train_outlined),
+                selectedIcon: const Icon(Icons.train),
+                label: Text('Moje Podróże'.hardcoded),
+              ),
               NavigationRailDestination(
                 icon: const Icon(Icons.person_outline),
                 selectedIcon: const Icon(Icons.person),
-                label: Text('Account'.hardcoded),
+                label: Text('Konto'.hardcoded),
               ),
             ],
           ),

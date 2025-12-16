@@ -17,6 +17,8 @@ import 'package:starter_architecture_flutter_firebase/src/features/onboarding/pr
 import 'package:starter_architecture_flutter_firebase/src/routing/go_router_refresh_stream.dart';
 import 'package:starter_architecture_flutter_firebase/src/routing/not_found_screen.dart';
 import 'package:starter_architecture_flutter_firebase/src/routing/scaffold_with_nested_navigation.dart';
+import 'package:starter_architecture_flutter_firebase/src/features/bookings/presentation/my_trips_screen.dart';
+import 'package:starter_architecture_flutter_firebase/src/features/chat/presentation/chat_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -24,6 +26,7 @@ part 'app_router.g.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _jobsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'jobs');
 final _entriesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'entries');
+final _tripsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'trips');
 final _accountNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'account');
 
 enum AppRoute {
@@ -38,6 +41,8 @@ enum AppRoute {
   editEntry,
   entries,
   profile,
+  myTrips,
+  chat,
 }
 
 @riverpod
@@ -69,7 +74,9 @@ GoRouter goRouter(Ref ref) {
         if (path.startsWith('/onboarding') ||
             path.startsWith('/jobs') ||
             path.startsWith('/entries') ||
-            path.startsWith('/account')) {
+            path.startsWith('/trips') ||
+            path.startsWith('/account') ||
+            path.startsWith('/chat')) {
           return '/signIn';
         }
       }
@@ -190,6 +197,18 @@ GoRouter goRouter(Ref ref) {
             ],
           ),
           StatefulShellBranch(
+            navigatorKey: _tripsNavigatorKey,
+            routes: [
+              GoRoute(
+                path: '/trips',
+                name: AppRoute.myTrips.name,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: MyTripsScreen(),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
             navigatorKey: _accountNavigatorKey,
             routes: [
               GoRoute(
@@ -202,6 +221,18 @@ GoRouter goRouter(Ref ref) {
             ],
           ),
         ],
+      ),
+      // Standalone chat route (full screen)
+      GoRoute(
+        path: '/chat/:chatId',
+        name: AppRoute.chat.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final chatId = state.pathParameters['chatId']!;
+          return MaterialPage(
+            child: ChatScreen(chatId: chatId),
+          );
+        },
       ),
     ],
     errorPageBuilder: (context, state) => const NoTransitionPage(

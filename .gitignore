@@ -104,3 +104,8 @@ android/app/google-services.json
 
 # Firebase hosting
 .firebase/
+
+# Cloud Functions
+functions/node_modules/
+functions/lib/
+functions/.runtimeconfig.json
