@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+    
+    // Conversation Sessions - dostęp tylko dla systemu (Cloud Functions)
+    match /conversationSessions/{sessionId} {
+      allow read, write: if false; // Tylko backend
+    }
+    
+    // Bookings - użytkownik widzi tylko swoje rezerwacje
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if false; // Nie można usuwać rezerwacji
+    }
+    
+    // Chats - dostęp tylko dla uczestników
+    match /chats/{chatId} {
+      allow read: if isSignedIn() && 
+                     request.auth.uid in resource.data.participants;
+      allow write: if false; // Tylko backend może tworzyć czaty
+      
+      // Messages w chacie
+      match /messages/{messageId} {
+        allow read: if isSignedIn() && 
+                       request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants;
+        allow create: if isSignedIn() && 
+                         request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants &&
+                         request.resource.data.userId == request.auth.uid;
+        allow update, delete: if false; // Nie można edytować/usuwać wiadomości
+      }
+    }
+    
+    // Processed Messages - tylko backend
+    match /processedMessages/{messageId} {
+      allow read, write: if false;
+    }
+    
+    // Audit Logs - tylko odczyt dla admina (przyszłość)
+    match /auditLogs/{logId} {
+      allow read, write: if false;
+    }
+  }
+}
