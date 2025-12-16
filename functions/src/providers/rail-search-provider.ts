@@ -1,6 +1,14 @@
 /**
  * Provider wyszukiwania połączeń kolejowych
- * MVP: Mock implementation - w produkcji integracja z API PKP/PolRegio
+ * MVP: Mock implementation
+ * TODO: W produkcji zintegrować z API:
+ *  - PKP Intercity API: https://intercity.pl (sprawdzić dokumentację)
+ *  - PolRegio API (jeśli dostępne)
+ *  - Alternatywnie: Koleo.pl API lub scraping z rozklady.pl
+ * Wymagane funkcje do implementacji:
+ *  - searchConnections() - wyszukiwanie połączeń
+ *  - getConnectionDetails() - szczegóły połączenia
+ *  - checkAvailability() - sprawdzanie dostępności miejsc
  */
 
 import {RailConnection, RailSearchQuery} from "../types";

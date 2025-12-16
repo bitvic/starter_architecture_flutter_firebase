@@ -37,7 +37,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final repository = ref.read(chatRepositoryProvider);
 
     // Pobierz nazwę użytkownika (dla MVP używamy email lub uid)
-    final userName = user.email?.split('@').first ?? user.uid.substring(0, 8);
+    // TODO: W produkcji należy dodać pole displayName w profilu użytkownika
+    final userName = user.email?.split('@').first ?? 
+                     (user.uid.length > 8 ? user.uid.substring(0, 8) : user.uid);
 
     try {
       await repository.sendMessage(

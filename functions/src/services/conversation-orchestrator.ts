@@ -107,11 +107,13 @@ export class ConversationOrchestrator {
 
   /**
    * Ekstrakcja encji z tekstu (uproszczona)
+   * TODO: W produkcji użyć DialogFlow/LUIS lub własnego modelu NLU
    */
   private extractEntities(message: string): any[] {
     const entities: any[] = [];
 
-    // Miasta (przykłady)
+    // Miasta polskie - TODO: przenieść do konfiguracji/bazy danych
+    // W produkcji: integracja z API miast PKP lub baza danych
     const cities = ["warszawa", "kraków", "wrocław", "poznań", "gdańsk", "katowice", "łódź"];
     cities.forEach((city) => {
       if (message.toLowerCase().includes(city)) {
@@ -334,9 +336,15 @@ export class ConversationOrchestrator {
     }
 
     // Utwórz nową sesję
+    // MVP: używamy sessionId jako userId - TO JEST TYMCZASOWE ROZWIĄZANIE
+    // TODO KRYTYCZNE: W produkcji należy:
+    //  1. Zaimplementować proper user management z Firebase Auth
+    //  2. Powiązać numer telefonu z userId poprzez Custom Claims lub Firestore
+    //  3. Utworzyć osobną kolekcję phoneNumbers -> userId mapping
+    //  4. Dodać weryfikację Phone Auth podczas pierwszego logowania
     const newSession: ConversationSession = {
       sessionId: sessionId,
-      userId: sessionId, // W MVP używamy sessionId jako userId
+      userId: sessionId, // TEMPORARY - replace with proper userId
       phoneNumber: "unknown",
       channel: "sms",
       status: "active",
